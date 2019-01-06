@@ -1,0 +1,69 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t broken-links:nil c:nil creator:nil
+#+OPTIONS: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
+#+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+OPTIONS: timestamp:t title:t toc:t todo:t |:t
+#+TAGS: FUTURE(f)
+#+TITLE: Features
+#+DATE: <2019-01-06 Sun>
+#+AUTHOR: Daniel Rothblatt
+#+EMAIL: djrothblatt@gmail.com
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 26.1 (Org mode 9.1.9)
+* TODO Backend [50%]
+** DONE Suggest rhymes
+   CLOSED: [2019-01-06 Sun 14:15]
+   For simplicity's sake, we'll use [[https://pypi.org/project/pronouncing/][pronouncing.py]] to find rhymes.
+   Under the hood, I believe this library partitions [[http://www.speech.cs.cmu.edu/cgi-bin/cmudict][the CMU Dictionary]] into
+   groups of rhyming words.[fn:1] It seems like it would be a lot of fun to figure
+   out how to do this ourselves, but for now let's just use what's available.
+** DONE Serve rhymes to clients
+   CLOSED: [2019-01-06 Sun 14:22]
+   Our options are normal HTTP requests and WebSockets. What I
+   envision is a single, long-lived connection that allows the client
+   to send words one at a time to get rhymes for; it sounds like
+   WebSockets are the way to go. 
+
+   Until we can analyze [[*Analyze rhyme scheme][the rhyme scheme]] of the poem, we can just
+   assume that all lines are supposed to rhyme.
+** TODO Analyze scansion                                             :FUTURE:
+   Most poetry ought to have a [[https://en.wikipedia.org/wiki/Metre_(poetry)][meter]], so we should be able to check
+   that a line scans to the chosen meter. We might want to check a
+   line every time it is changed.
+** TODO Analyze rhyme scheme                                         :FUTURE:
+   Much English poetry has a [[https://en.wikipedia.org/wiki/Rhyme_scheme][rhyme scheme]], so we should be able to
+   check that any line we add or change rhymes with what we already
+   have. 
+* TODO Frontend [25%]
+** TODO Multiline poem
+   This should be kind of a ~<textarea />~.
+** TODO Suggest rhymes [50%]
+   I'm thinking an input that includes a list of suggestions for
+   rhyming words.
+*** DONE Connect to backend
+    CLOSED: [2019-01-06 Sun 16:16]
+    This is a WebSocket connection.
+    CLOSED: [2019-01-06 Sun 16:17]
+*** TODO Allow user to choose rhymes [2/3]
+    I'm thinking this will look as follows:
+
+    1. The user clicks a word/line
+
+       We want to rhyme the last word of the line the user clicks on.
+    2. The frontend sends the word to the backend
+    3. The frontend displays the response from the backend as a list
+       of possible rhyming words
+     
+       
+    So we really have three steps here.
+**** TODO Handle click on word
+**** DONE Send word to backend
+     CLOSED: [2019-01-06 Sun 16:17]
+**** DONE Display list of possible rhymes
+     CLOSED: [2019-01-06 Sun 16:17]
+** TODO Styling
+* Footnotes
+
+[fn:1] At least, this is what I would do.
